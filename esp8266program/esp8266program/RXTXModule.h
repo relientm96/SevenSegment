@@ -13,7 +13,7 @@
 void handleRoot();              // function prototypes for HTTP handlers
 void handleNumberInput();       // handles POST request by client
 void handleNotFound();          // for invalid URLs
-void seriallySendNumber(byte input); //Serially send input number to arduino
+void seriallySendNumber(byte result); //Serially send input number to arduino
 
 void doESPInit();
 void doESPLoop();

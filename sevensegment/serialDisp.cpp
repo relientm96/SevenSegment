@@ -1,5 +1,7 @@
 #include "serialDisp.h"
 
+byte i = 0;  //A byte storing the received data from ESP8266
+
 void doRxInit(){
   pinMode(13, OUTPUT);   //c segment       
   pinMode(2, OUTPUT);    //decimal point segment
@@ -13,6 +15,9 @@ void doRxInit(){
   //Cathode Controls (Digit Select "Cathod" Pins)
   pinMode(7, OUTPUT);   //right digit select
   pinMode(8, OUTPUT);   //left digit select
+
+  //Initialize Serial Communication
+  Serial.begin(9600);
 }
 
 void doRxLoop(){
@@ -24,23 +29,19 @@ void doRxLoop(){
     byte readLSD; // Lease Significant Digit Value
 
     //Counters
-    byte i;  //A byte storing the received data from ESP8266
     byte j; //A byte is an 8-bit number (unsigned)
 
-    i = 87;
-
+    if(Serial.available() > 0){
+      i = Serial.read();
+    }
+    
     //Obtain our right digit and left digit display numbers
     readMSD = characterArray[i/10];
     readLSD = characterArray[i%10];
 
-    //Printing out output to check if equal to seven segment
-    Serial.print("Output Digit is: ");
-    Serial.print((i/10),DEC);
-    Serial.println((i%10),DEC);
-
     //This inner loop loops through to display the two digits at fast speeds
     //(Increase speedOfHoldingNumber to make it slower)
-    int speedOfHoldingNumber = 5;
+    int speedOfHoldingNumber = 30;
     for(j = 0; j <= speedOfHoldingNumber; j++){
 
     //1. Choose Side

@@ -34,12 +34,15 @@ void handleNotFound(){
 }
 
 //This handles the serial communication of the number from ESP8266 to arduino
-void seriallySendNumber(byte input){
-  Serial.println(input,DEC);
+void seriallySendNumber(byte result){
+  Serial.write(result);
 }
 
 void doESPInit(){
-  
+
+  //Initialize serial protocol
+  Serial.begin(9600);
+
   wifiMulti.addAP("china", "bidibadadowop");   // add Wi-Fi networks you want to connect to
 
   //Serial.println("Connecting ...");
