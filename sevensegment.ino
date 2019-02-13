@@ -9,9 +9,9 @@
 //#define <VARIABLE NAME> <VALUE> lets the program know that if they see this variable name, just replace it with value
 
 //Mode Controls (Uncomment to use, only one mode at a time)
-//#define POTMODE 
+#define POTMODE 
 //#define COUNTERMODE
-#define RXTXMODE 
+//#define RXTXMODE 
 
 /*--------------Variable and Constants Definitions----------------*/
 //Here we define the global variables we need that can be "seen" and used by all subroutines
@@ -63,6 +63,7 @@ void setup() {
   // parameters: a) <pin number> : this is where you put your pin # on arduino that you want to control
   //             b) <type of pin> : Only accepts two values, INPUT or OUTPUT (which is a pre-defined macro to define if pin is input/output)
 
+  #if defined COUNTERMODE || defined POTMODE
   pinMode(13, OUTPUT);   //c segment       
   pinMode(2, OUTPUT);    //decimal point segment
   pinMode(3, OUTPUT);    //e segement     
@@ -76,15 +77,19 @@ void setup() {
   pinMode(7, OUTPUT);   //right digit select
   pinMode(8, OUTPUT);   //left digit select
 
+  //Setup Serial Monitor for debugging
+  Serial.begin(9600); //Set initial baud rate of 9600
+  Serial.println("---Serial Monitor ---"); //Print monitor header (only printed once)
+
+  #endif
+  
   //Analog input pin for potentiometer analog read value (potPin = A0) 
   //For potentiometer mode only
   #ifdef POTMODE
      pinMode(potPin, INPUT);
   #endif
 
-  //Setup Serial Monitor for debugging
-  Serial.begin(9600); //Set initial baud rate of 9600
-  Serial.println("---Serial Monitor ---"); //Print monitor header (only printed once)
+ 
 }
 
 
@@ -217,8 +222,26 @@ void loop() {
       
  #endif
 
+ /*----This is the Receiver and Transmitter module fo ESP8266 communication to Arudino to control motor pwm-----*/
+ 
+ #ifdef RXTXMODE
+
+ Serial.println("I am inside RTX MODE");
+ 
+
+ #endif
 }
       
       
-   /*-------------------------------------------------*/
+
+
+
+
+
+
+
+
+
+
+   
           
