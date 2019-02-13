@@ -13,7 +13,7 @@
 /*----Mode Controls (Uncomment to use, only one mode at a time)---*/
 //#define POTMODE 
 //#define COUNTERMODE
-#define RXTXMODE 
+#define SERIALDISP
 
 /*----Adding External Modules---*/
 
@@ -23,12 +23,12 @@
   #include "potModule.h"
 #endif 
 
-#ifdef RXTXMODE
-  #include "RXTXModule.h"
-#endif
-
 #ifdef COUNTERMODE
   #include "counterModule.h"
+#endif
+
+#ifdef SERIALDISP
+  #include "serialDisp.h"
 #endif
 
 /*-------------Main Program----------------*/
@@ -39,7 +39,7 @@ void setup() {
   //Setup Serial Monitor for debugging
   Serial.begin(9600); //Set initial baud rate of 9600
   Serial.println("---Serial Monitor ---"); //Print monitor header (only printed once)
-
+  
   //Analog input pin for potentiometer analog read value (potPin = A0) 
   //For potentiometer mode only
   #ifdef POTMODE
@@ -52,11 +52,10 @@ void setup() {
     doCounterInit();
   #endif
 
-  //RX TX Mode for ESP8266 board programming
-  #ifdef RXTXMODE
-    Serial.println("---Initializing ESP8266 ---"); 
-    doESPInit();
-  #endif RXTXMODE
+  #ifdef SERIALDISP
+    doRxInit();
+  #endif 
+  
 }
 
 
@@ -72,11 +71,12 @@ void loop() {
   #ifdef COUNTERMODE 
    doCounterLoop();
   #endif
-  
-  /*----This section of code is for ESP8266 module-----*/
-  #ifdef RXTXMODE
-   doESPLoop();
+
+  /*----This section of code is for Arduino Receiver module from ESP8266-----*/
+  #ifdef SERIALDISP
+    doRxLoop();
   #endif 
+
 }
       
       
