@@ -11,9 +11,9 @@
 /**Main Function**/
 
 /*----Mode Controls (Uncomment to use, only one mode at a time)---*/
-#define POTMODE 
+//#define POTMODE 
 //#define COUNTERMODE
-//#define RXTXMODE 
+#define RXTXMODE 
 
 /*----Adding External Modules---*/
 
