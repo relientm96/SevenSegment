@@ -13,6 +13,12 @@
 //#define COUNTERMODE
 #define RXTXMODE 
 
+/*Adding our externally defined modules*/
+
+#ifdef RXTXMODE
+  #include "RXTXModule.h"
+#endif
+
 /*--------------Variable and Constants Definitions----------------*/
 //Here we define the global variables we need that can be "seen" and used by all subroutines
 
@@ -56,13 +62,18 @@ const int potPin = A0;
 
 //Entry point of our program, program starts here and runs setup() once initially
 void setup() {
-
+  
+  //Setup Serial Monitor for debugging
+  Serial.begin(9600); //Set initial baud rate of 9600
+  Serial.println("---Serial Monitor ---"); //Print monitor header (only printed once)
+  
   /*Setup Pin assignments*/
   // void pinMode( <pin number> , <type of pin> )
   // returns: void (nothing)
   // parameters: a) <pin number> : this is where you put your pin # on arduino that you want to control
   //             b) <type of pin> : Only accepts two values, INPUT or OUTPUT (which is a pre-defined macro to define if pin is input/output)
 
+  #if defined POTMODE || defined COUNTERMODE
   pinMode(13, OUTPUT);   //c segment       
   pinMode(2, OUTPUT);    //decimal point segment
   pinMode(3, OUTPUT);    //e segement     
@@ -75,6 +86,8 @@ void setup() {
   //Cathode Controls (Digit Select "Cathod" Pins)
   pinMode(7, OUTPUT);   //right digit select
   pinMode(8, OUTPUT);   //left digit select
+  
+  #endif
 
   //Analog input pin for potentiometer analog read value (potPin = A0) 
   //For potentiometer mode only
@@ -82,9 +95,11 @@ void setup() {
      pinMode(potPin, INPUT);
   #endif
 
-  //Setup Serial Monitor for debugging
-  Serial.begin(9600); //Set initial baud rate of 9600
-  Serial.println("---Serial Monitor ---"); //Print monitor header (only printed once)
+  //RX TX Mode for ESP8266 board programming
+  #ifdef RXTXMODE
+    Serial.println("---Initializing ESP8266 ---"); //Print monitor header (only printed once)
+    doESPInit();
+  #endif RXTXMODE
 }
 
 
@@ -216,9 +231,12 @@ void loop() {
   }
       
  #endif
+ /*-------------------------------------------------*/
 
+ #ifdef RXTXMODE
+  doESPLoop();
+ #endif 
 }
       
       
-   /*-------------------------------------------------*/
           
