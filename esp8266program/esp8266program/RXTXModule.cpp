@@ -42,6 +42,7 @@ void doESPInit(){
 
   //Initialize serial protocol
   Serial.begin(9600);
+  Serial.write(0);
 
   wifiMulti.addAP("china", "bidibadadowop");   // add Wi-Fi networks you want to connect to
 
@@ -49,22 +50,14 @@ void doESPInit(){
   int i = 0;
   while (wifiMulti.run() != WL_CONNECTED) {    // Wait for the Wi-Fi to connect: scan for Wi-Fi networks, and connect to the strongest of the networks above
     delay(250);
-    //Serial.print('.');
   }
-  //Serial.println('\n');
-  //Serial.print("Connected to ");
-  //Serial.println(WiFi.SSID());               // Tell us what network we're connected to
-  //Serial.print("IP address:\t");
-  //Serial.println(WiFi.localIP());            // Send the IP address of the ESP8266 to the computer
   
   MDNS.begin("esp8266");                        // Start the mDNS responder for esp8266.local
-
   server.on("/", HTTP_GET, handleRoot);         // Call the 'handleRoot' function when a client requests URI "/"
   server.on("/", HTTP_POST, handleNumberInput); // Call the 'handleLogin' function when a POST request is made to URI "/login"
   server.onNotFound(handleNotFound);            // When a client requests an unknown URI (i.e. something other than "/"), call function "handleNotFound"
 
   server.begin();                               //Start Server
-  //Serial.println("HTTP server started");
 }
 
 void doESPLoop(){
