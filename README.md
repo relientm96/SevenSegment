@@ -1,4 +1,4 @@
-#Seven Segment 
+# Seven Segment 
 
 This is a double seven segment display module controlled using Arduino.  
 Has three different modes
